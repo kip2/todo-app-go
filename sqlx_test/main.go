@@ -10,11 +10,6 @@ import (
 	"github.com/joho/godotenv"
 )
 
-type User struct {
-	ID   int    `db:"id"`
-	Name string `db:"name"`
-}
-
 func main() {
 	// todo
 	fmt.Println("Hello go!")

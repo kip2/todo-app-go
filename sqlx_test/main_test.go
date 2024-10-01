@@ -7,6 +7,11 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
+type User struct {
+	ID   int    `db:"id"`
+	Name string `db:"name"`
+}
+
 /*
 テスト用DBへの接続と値の取得テスト
 */
