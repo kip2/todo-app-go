@@ -17,8 +17,8 @@ type User struct {
 
 func main() {
 	// dbとのコネクションを作成
-	envKey := "DATABASE"
-	db := createDBConnection(envKey)
+	envVar := "DATABASE"
+	db := createDBConnection(envVar)
 
 	// dbコネクションを閉じるためのデコンストラクタ
 	defer db.Close()
@@ -39,8 +39,8 @@ func main() {
 /*
 DBコネクションを作成する関数
 */
-func createDBConnection(envKey string) *sqlx.DB {
-	dsn := loadEnv(envKey)
+func createDBConnection(envVar string) *sqlx.DB {
+	dsn := loadEnv(envVar)
 
 	db, err := sqlx.Connect("mysql", dsn)
 	if err != nil {
