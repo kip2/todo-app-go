@@ -16,24 +16,8 @@ type User struct {
 }
 
 func main() {
-	// dbとのコネクションを作成
-	envVar := "DATABASE"
-	db := createDBConnection(envVar)
-
-	// dbコネクションを閉じるためのデコンストラクタ
-	defer db.Close()
-
-	// クエリを実行して結果を取得
-	var users []User
-	err := db.Select(&users, "SELECT id, name FROM users WHERE id=?", 1)
-	if err != nil {
-		log.Fatalln(err)
-	}
-
-	// クエリした結果を表示して確認
-	for _, user := range users {
-		fmt.Printf("ID: %d, Name: %s\n", user.ID, user.Name)
-	}
+	// todo
+	fmt.Println("Hello go!")
 }
 
 /*
