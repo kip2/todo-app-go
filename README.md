@@ -13,7 +13,7 @@ Go言語で作成したTodoアプリです
 
 ## 作業ログ
 
-[作業ログ](https://zenn.dev/kip2/scraps/177cb54290d240)
+[作業ログ @ zenn scrap](https://zenn.dev/kip2/scraps/177cb54290d240)
 
 ## 触発
 
