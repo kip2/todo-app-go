@@ -3,6 +3,7 @@ package db
 import (
 	"fmt"
 	"log"
+	"time"
 	"todoApp/env"
 	errorpkg "todoApp/error"
 
@@ -10,11 +11,36 @@ import (
 	"github.com/jmoiron/sqlx"
 )
 
+const envVar = "DATABASE"
+
+type Todo struct {
+	ID        int        `db:"ID"`
+	Content   string     `db:"Content"`
+	Done      bool       `db:"Done"`
+	Until     *time.Time `db:"Until"`
+	CreatedAt time.Time  `db:"CreatedAt"`
+	UpdatedAt time.Time  `db:"UpdatedAt"`
+	DeletedAt *time.Time `db:"DeletedAt"`
+}
+
 /*
-データをDBにINSERTする
+指定したIDのTodoをDBから取得する
+*/
+func SelectById(id int) Todo {
+	db := CreateDBConnection(envVar)
+	defer db.Close()
+
+	var todo Todo
+	err := db.Get(&todo, "SELECT * FROM todos WHERE id=?", id)
+	errorpkg.CheckError(err)
+
+	return todo
+}
+
+/*
+データをDBにINSERTする(test用)
 */
 func Insert(name string) {
-	envVar := "DATABASE"
 	db := CreateDBConnection(envVar)
 	defer db.Close()
 
