@@ -33,7 +33,7 @@ func insert(name string) {
 }
 
 /*
-エラーハンドリング用のコード(マクロ代わり)
+エラーハンドリング用
 */
 func checkError(err error) {
 	if err != nil {
