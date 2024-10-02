@@ -6,6 +6,9 @@ import (
 )
 
 func main() {
-	todo := db.SelectById(1)
-	fmt.Printf("Todo: %+v\n", todo)
+	todos := db.SelectAll()
+
+	for _, t := range todos {
+		fmt.Printf("Todo: %+v\n", t)
+	}
 }

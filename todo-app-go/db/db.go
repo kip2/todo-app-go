@@ -24,6 +24,20 @@ type Todo struct {
 }
 
 /*
+すべてのTodoをDBから取得する
+*/
+func SelectAll() []Todo {
+	db := CreateDBConnection(envVar)
+	defer db.Close()
+
+	var todo []Todo
+	err := db.Select(&todo, "SELECT * FROM todos")
+	errorpkg.CheckError(err)
+
+	return todo
+}
+
+/*
 指定したIDのTodoをDBから取得する
 */
 func SelectById(id int) Todo {
