@@ -1,4 +1,4 @@
-module sqlx_test
+module todo-app-go
 
 go 1.22.5
 
