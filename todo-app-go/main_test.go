@@ -3,6 +3,8 @@ package main
 import (
 	"os"
 	"testing"
+	"todoApp/db"
+	"todoApp/env"
 
 	"github.com/stretchr/testify/assert"
 )
@@ -17,7 +19,7 @@ type User struct {
 */
 func TestDBQuery(t *testing.T) {
 	envVar := "DATABASE"
-	db := createDBConnection(envVar)
+	db := db.CreateDBConnection(envVar)
 	defer db.Close()
 
 	var users []User
@@ -40,12 +42,12 @@ func TestDBQuery(t *testing.T) {
 
 func TestLoadEnv(t *testing.T) {
 	os.Setenv("DATABASE", "test-dsn")
-	dsn := loadEnv("DATABASE")
+	dsn := env.LoadEnv("DATABASE")
 	assert.Equal(t, "test-dsn", dsn, "環境変数の値が正しく読み込まれていません")
 }
 
 func TestCreateDBConnection(t *testing.T) {
-	db := createDBConnection("DATABASE")
+	db := db.CreateDBConnection("DATABASE")
 	defer db.Close()
 
 	assert.NotNil(t, db, "DBコネクションが作成されていません")
