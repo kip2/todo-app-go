@@ -11,8 +11,31 @@ import (
 )
 
 func main() {
-	// todo
-	fmt.Println("Hello go!")
+	name := "David"
+	insert(name)
+}
+
+func insert(name string) {
+	envVar := "DATABASE"
+	db := createDBConnection(envVar)
+	defer db.Close()
+
+	result, err := db.Exec("INSERT INTO users (name) VALUES (?)", name)
+	checkError(err)
+
+	lastInsertID, err := result.LastInsertId()
+	checkError(err)
+
+	fmt.Printf("Inserted user with ID: %d\n", lastInsertID)
+}
+
+/*
+エラーハンドリング用のコード(マクロ代わり)
+*/
+func checkError(err error) {
+	if err != nil {
+		log.Fatalln(err)
+	}
 }
 
 /*
