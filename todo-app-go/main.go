@@ -18,14 +18,21 @@ type Todo struct {
 }
 
 func main() {
+	todo := selectById(1)
+	fmt.Printf("Todo: %+v\n", todo)
+}
 
+/*
+指定したIDのTodoをDBから取得する
+*/
+func selectById(id int) Todo {
 	envVar := "DATABASE"
 	db := db.CreateDBConnection(envVar)
 	defer db.Close()
 
 	var todo Todo
-	err := db.Get(&todo, "SELECT * FROM todos WHERE id=?", 1)
+	err := db.Get(&todo, "SELECT * FROM todos WHERE id=?", id)
 	errorpkg.CheckError(err)
 
-	fmt.Printf("Todo: %+v\n", todo)
+	return todo
 }
