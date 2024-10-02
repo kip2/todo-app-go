@@ -16,7 +16,7 @@ func main() {
 }
 
 /*
-DBコネクションを作成する関数
+MySQLのDBコネクションを作成する関数
 */
 func createDBConnection(envVar string) *sqlx.DB {
 	dsn := loadEnv(envVar)
