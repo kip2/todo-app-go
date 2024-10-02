@@ -15,6 +15,9 @@ func main() {
 	insert(name)
 }
 
+/*
+データをDBにINSERTする
+*/
 func insert(name string) {
 	envVar := "DATABASE"
 	db := createDBConnection(envVar)
