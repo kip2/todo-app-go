@@ -20,7 +20,6 @@ type Todo struct {
 	Until     *time.Time `db:"Until"`
 	CreatedAt time.Time  `db:"CreatedAt"`
 	UpdatedAt time.Time  `db:"UpdatedAt"`
-	DeletedAt *time.Time `db:"DeletedAt"`
 }
 
 /*
