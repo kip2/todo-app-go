@@ -1,19 +1,25 @@
 package main
 
 import (
-	"fmt"
+	"encoding/json"
+	"net/http"
 	"todoApp/internal/db"
-	"todoApp/internal/json"
 )
 
 func main() {
+	http.HandleFunc("/todos", todosHandler)
+
+	http.ListenAndServe(":8080", nil)
+}
+
+func todosHandler(w http.ResponseWriter, r *http.Request) {
 	todos := db.SelectAll()
 
-	for _, t := range todos {
-		fmt.Printf("Todo: %+v\n", t)
+	w.Header().Set("Content-Type", "application/json")
+
+	err := json.NewEncoder(w).Encode(todos)
+	if err != nil {
+		http.Error(w, "Filed to encode users", http.StatusInternalServerError)
+		return
 	}
-
-	fmt.Println("Serialize Todos data to json data")
-
-	json.SerializeTodos(todos)
 }
