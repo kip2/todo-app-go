@@ -2,7 +2,7 @@ package main
 
 import (
 	"fmt"
-	"todoApp/db"
+	"todoApp/internal/db"
 )
 
 func main() {

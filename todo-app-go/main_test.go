@@ -3,8 +3,8 @@ package main
 import (
 	"os"
 	"testing"
-	"todoApp/db"
-	"todoApp/env"
+	"todoApp/internal/db"
+	"todoApp/internal/env"
 
 	"github.com/stretchr/testify/assert"
 )

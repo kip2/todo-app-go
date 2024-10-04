@@ -4,8 +4,8 @@ import (
 	"fmt"
 	"log"
 	"time"
-	"todoApp/env"
-	errorpkg "todoApp/error"
+	"todoApp/internal/env"
+	errorpkg "todoApp/internal/error"
 
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/jmoiron/sqlx"
