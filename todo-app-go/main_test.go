@@ -1,6 +1,10 @@
 package main
 
 import (
+	"bytes"
+	"encoding/json"
+	"net/http"
+	"net/http/httptest"
 	"os"
 	"testing"
 	"todoApp/internal/db"
@@ -9,9 +13,51 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-type User struct {
-	ID   int    `db:"id"`
-	Name string `db:"name"`
+// type User struct {
+// 	ID   int    `db:"id"`
+// 	Name string `db:"name"`
+// }
+
+func TestRegisterHandler(t *testing.T) {
+	// リクエスト用のJSONデータの作成
+	reqBody := User{
+		ID:   1,
+		Name: "John",
+	}
+	jsonData, err := json.Marshal(reqBody)
+	if err != nil {
+		t.Fatalf("Failed to marshal request: %v", err)
+	}
+
+	// JSONリクエストの作成
+	req, err := http.NewRequest("POST", "/register", bytes.NewBuffer(jsonData))
+	if err != nil {
+		t.Fatalf("Failed to create request: %v", err)
+	}
+	req.Header.Set("Content-Type", "application/json")
+
+	// レスポンス記録のためのレコーダーを用意
+	rr := httptest.NewRecorder()
+
+	// ハンドラーの呼び出し
+	handler := http.HandlerFunc(registerHandler)
+	handler.ServeHTTP(rr, req)
+
+	// ステータスコードが200かの確認
+	if status := rr.Code; status != http.StatusOK {
+		t.Errorf("Handler returned wrong status code: got %v want %v", status, http.StatusOK)
+	}
+
+	// レスポンスの内容を確認
+	var resBody Response
+	if err := json.NewDecoder(rr.Body).Decode(&resBody); err != nil {
+		t.Fatalf("Failed to decode response: %v", err)
+	}
+
+	expectedMessage := "Hello, John"
+	if resBody.Message != expectedMessage {
+		t.Errorf("Handler returned unexpected body: got %v want %v", resBody.Message, expectedMessage)
+	}
 }
 
 /*
