@@ -3,7 +3,6 @@ package main
 import (
 	"bytes"
 	"encoding/json"
-	"fmt"
 	"net/http"
 	"net/http/httptest"
 	"os"
@@ -18,10 +17,8 @@ import (
 
 func TestRegisterHandler(t *testing.T) {
 	// リクエスト用のJSONデータの作成
-	currentTime := time.Now().Format("2006-01-02")
-	untilDate, err := time.Parse("2006-01-02", currentTime)
-
-	fmt.Println("untileDate:", untilDate)
+	untilTime := "2024-12-31"
+	untilDate, err := time.Parse("2006-01-02", untilTime)
 
 	reqBody := models.RegisterRequest{
 		Content: "todo test content",
@@ -58,7 +55,7 @@ func TestRegisterHandler(t *testing.T) {
 		t.Fatalf("Failed to decode response: %v", err)
 	}
 
-	expectedMessage := "Hello, todo test content"
+	expectedMessage := "SUCCESS"
 	if resBody.Result != expectedMessage {
 		t.Errorf("Handler returned unexpected body: got %v want %v", resBody.Result, expectedMessage)
 	}

@@ -28,19 +28,21 @@ func SelectAll() []models.Todo {
 }
 
 /*
-データをDBにINSERTする(test用)
+データをDBにINSERTする
 */
-func Insert(envVar string, data string) {
+func Insert(data models.RegisterRequest) (int64, error) {
 	db := CreateDBConnection(envVar)
 	defer db.Close()
 
-	result, err := db.Exec("INSERT INTO users (name) VALUES (?)", data)
+	result, err := db.Exec("INSERT INTO todos (Content, Until) VALUES (?, ?)", data.Content, data.Until)
 	errorpkg.CheckError(err)
 
 	lastInsertID, err := result.LastInsertId()
-	errorpkg.CheckError(err)
+	if err != nil {
+		return 0, err
+	}
 
-	fmt.Printf("Inserted user with ID: %d\n", lastInsertID)
+	return lastInsertID, err
 }
 
 /*

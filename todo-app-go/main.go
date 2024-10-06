@@ -21,12 +21,18 @@ func registerHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// 受け取ったデータをDBに登録する処理
-
-	// responseデータとして登録したことを返す処理
-	// todo: DB登録がうまく言ったかどうかを判定する
+	// 成功の場合のResponseデータを作成
 	response := models.Response{
-		Result: "Hello, " + req.Content,
+		Result: "SUCCESS",
+	}
+
+	// DBへの登録処理を行う
+	_, err := db.Insert(req)
+	// DB登録処理が失敗なら、エラーメッセージを格納したResponseデータに変更
+	if err != nil {
+		response = models.Response{
+			Result: "Data register error.",
+		}
 	}
 
 	w.Header().Set("Content-Type", "application/json")
