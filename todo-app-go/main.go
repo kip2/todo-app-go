@@ -8,7 +8,9 @@ import (
 )
 
 func main() {
+	// リスト(todo)の一覧を取得するハンドラのバインド
 	http.HandleFunc("/todos", todosHandler)
+	// リクエストしたデータを登録するハンドラのバインド
 	http.HandleFunc("/register", registerHandler)
 
 	http.ListenAndServe(":8080", nil)
