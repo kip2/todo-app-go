@@ -14,6 +14,9 @@ func main() {
 	http.ListenAndServe(":8080", nil)
 }
 
+/*
+リクエストに含まれるデータをDBに登録するハンドラ
+*/
 func registerHandler(w http.ResponseWriter, r *http.Request) {
 	var req models.RegisterRequest
 	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
@@ -40,6 +43,9 @@ func registerHandler(w http.ResponseWriter, r *http.Request) {
 
 }
 
+/*
+DBからTodoの全リストを取得して、レスポンスするハンドラ
+*/
 func todosHandler(w http.ResponseWriter, r *http.Request) {
 	todos := db.SelectAll()
 
