@@ -3,27 +3,31 @@ package main
 import (
 	"bytes"
 	"encoding/json"
+	"fmt"
 	"net/http"
 	"net/http/httptest"
 	"os"
 	"testing"
+	"time"
 	"todoApp/internal/db"
 	"todoApp/internal/env"
+	"todoApp/internal/models"
 
 	"github.com/stretchr/testify/assert"
 )
 
-// type User struct {
-// 	ID   int    `db:"id"`
-// 	Name string `db:"name"`
-// }
-
 func TestRegisterHandler(t *testing.T) {
 	// リクエスト用のJSONデータの作成
-	reqBody := User{
-		ID:   1,
-		Name: "John",
+	currentTime := time.Now().Format("2006-01-02")
+	untilDate, err := time.Parse("2006-01-02", currentTime)
+
+	fmt.Println("untileDate:", untilDate)
+
+	reqBody := models.RegisterRequest{
+		Content: "todo test content",
+		Until:   untilDate,
 	}
+
 	jsonData, err := json.Marshal(reqBody)
 	if err != nil {
 		t.Fatalf("Failed to marshal request: %v", err)
@@ -49,14 +53,14 @@ func TestRegisterHandler(t *testing.T) {
 	}
 
 	// レスポンスの内容を確認
-	var resBody Response
+	var resBody models.Response
 	if err := json.NewDecoder(rr.Body).Decode(&resBody); err != nil {
 		t.Fatalf("Failed to decode response: %v", err)
 	}
 
-	expectedMessage := "Hello, John"
-	if resBody.Message != expectedMessage {
-		t.Errorf("Handler returned unexpected body: got %v want %v", resBody.Message, expectedMessage)
+	expectedMessage := "Hello, todo test content"
+	if resBody.Result != expectedMessage {
+		t.Errorf("Handler returned unexpected body: got %v want %v", resBody.Result, expectedMessage)
 	}
 }
 
@@ -68,14 +72,14 @@ func TestDBQuery(t *testing.T) {
 	db := db.CreateDBConnection(envVar)
 	defer db.Close()
 
-	var users []User
+	var users []models.User
 	err := db.Select(&users, "SELECT id, name FROM users WHERE id=?", 1)
 
 	// クエリ実行時のエラーをテスト
 	assert.NoError(t, err, "クエリ実行時にエラーが発生しました")
 
 	// 期待するUserデータ
-	var expectedUser = User{
+	var expectedUser = models.User{
 		ID:   1,
 		Name: "Alice",
 	}

@@ -3,9 +3,9 @@ package db
 import (
 	"fmt"
 	"log"
-	"time"
 	"todoApp/internal/env"
 	errorpkg "todoApp/internal/error"
+	"todoApp/internal/models"
 
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/jmoiron/sqlx"
@@ -13,38 +13,15 @@ import (
 
 const envVar = "DATABASE"
 
-type Todo struct {
-	ID        int        `db:"ID"`
-	Content   string     `db:"Content"`
-	Done      bool       `db:"Done"`
-	Until     *time.Time `db:"Until"`
-	CreatedAt time.Time  `db:"CreatedAt"`
-	UpdatedAt time.Time  `db:"UpdatedAt"`
-}
-
 /*
 すべてのTodoをDBから取得する
 */
-func SelectAll() []Todo {
+func SelectAll() []models.Todo {
 	db := CreateDBConnection(envVar)
 	defer db.Close()
 
-	var todo []Todo
+	var todo []models.Todo
 	err := db.Select(&todo, "SELECT * FROM todos")
-	errorpkg.CheckError(err)
-
-	return todo
-}
-
-/*
-指定したIDのTodoをDBから取得する
-*/
-func SelectById(id int) Todo {
-	db := CreateDBConnection(envVar)
-	defer db.Close()
-
-	var todo Todo
-	err := db.Get(&todo, "SELECT * FROM todos WHERE id=?", id)
 	errorpkg.CheckError(err)
 
 	return todo
@@ -53,17 +30,31 @@ func SelectById(id int) Todo {
 /*
 データをDBにINSERTする(test用)
 */
-func Insert(name string) {
+func Insert(envVar string, data string) {
 	db := CreateDBConnection(envVar)
 	defer db.Close()
 
-	result, err := db.Exec("INSERT INTO users (name) VALUES (?)", name)
+	result, err := db.Exec("INSERT INTO users (name) VALUES (?)", data)
 	errorpkg.CheckError(err)
 
 	lastInsertID, err := result.LastInsertId()
 	errorpkg.CheckError(err)
 
 	fmt.Printf("Inserted user with ID: %d\n", lastInsertID)
+}
+
+/*
+指定したIDのTodoをDBから取得する
+*/
+func SelectById(id int) models.Todo {
+	db := CreateDBConnection(envVar)
+	defer db.Close()
+
+	var todo models.Todo
+	err := db.Get(&todo, "SELECT * FROM todos WHERE id=?", id)
+	errorpkg.CheckError(err)
+
+	return todo
 }
 
 /*
@@ -78,4 +69,20 @@ func CreateDBConnection(envVar string) *sqlx.DB {
 	}
 
 	return db
+}
+
+/*
+データをDBにINSERTする(test用)
+*/
+func InsertUserTestData(name string) {
+	db := CreateDBConnection(envVar)
+	defer db.Close()
+
+	result, err := db.Exec("INSERT INTO users (name) VALUES (?)", name)
+	errorpkg.CheckError(err)
+
+	lastInsertID, err := result.LastInsertId()
+	errorpkg.CheckError(err)
+
+	fmt.Printf("Inserted user with ID: %d\n", lastInsertID)
 }

@@ -4,16 +4,8 @@ import (
 	"encoding/json"
 	"net/http"
 	"todoApp/internal/db"
+	"todoApp/internal/models"
 )
-
-type User struct {
-	ID   int    `db:"id"`
-	Name string `db:"name"`
-}
-
-type Response struct {
-	Message string `json:"message"`
-}
 
 func main() {
 	http.HandleFunc("/todos", todosHandler)
@@ -23,14 +15,18 @@ func main() {
 }
 
 func registerHandler(w http.ResponseWriter, r *http.Request) {
-	var req User
+	var req models.RegisterRequest
 	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
 		http.Error(w, "Bad request", http.StatusBadRequest)
 		return
 	}
 
-	response := Response{
-		Message: "Hello, " + req.Name,
+	// 受け取ったデータをDBに登録する処理
+
+	// responseデータとして登録したことを返す処理
+	// todo: DB登録がうまく言ったかどうかを判定する
+	response := models.Response{
+		Result: "Hello, " + req.Content,
 	}
 
 	w.Header().Set("Content-Type", "application/json")
