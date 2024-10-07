@@ -28,21 +28,62 @@ func SelectAll() []models.Todo {
 }
 
 /*
-データをDBにINSERTする
+指定されたIDのデータを削除する
 */
-func Insert(data models.RegisterRequest) (int64, error) {
+func Delete(data models.DeleteRequest) error {
 	db := CreateDBConnection(envVar)
 	defer db.Close()
 
-	result, err := db.Exec("INSERT INTO todos (Content, Until) VALUES (?, ?)", data.Content, data.Until)
-	errorpkg.CheckError(err)
-
-	lastInsertID, err := result.LastInsertId()
+	// クエリ実行
+	result, err := db.Exec("DELETE FROM todos WHERE ID = ?", data.ID)
 	if err != nil {
-		return 0, err
+		return fmt.Errorf("failed to execute delete: %v", err)
 	}
 
-	return lastInsertID, err
+	// 実際に削除した行数を取得する
+	rowsAffected, err := result.RowsAffected()
+	// 削除行数取得に失敗した場合のエラーを返す
+	if err != nil {
+		return fmt.Errorf("failed to retrieve affected rows: %v", err)
+	}
+
+	// 削除した行数が0ならエラーを返す
+	if rowsAffected == 0 {
+		return fmt.Errorf("no rows deleted, ID %d not found", data.ID)
+	}
+
+	// 正常終了のため、nilを返す
+	return nil
+}
+
+/*
+指定したIDのデータをDBにINSERTする
+*/
+func InsertById(id int, data models.RegisterRequest) error {
+	db := CreateDBConnection(envVar)
+	defer db.Close()
+
+	_, err := db.Exec("INSERT INTO todos (ID, Content, Until) VALUES (?, ?, ?)", id, data.Content, data.Until)
+	if err != nil {
+		return fmt.Errorf("failed to execute insert: %v", err)
+	}
+
+	return nil
+}
+
+/*
+データをDBにINSERTする
+*/
+func Insert(data models.RegisterRequest) error {
+	db := CreateDBConnection(envVar)
+	defer db.Close()
+
+	_, err := db.Exec("INSERT INTO todos (Content, Until) VALUES (?, ?)", data.Content, data.Until)
+	if err != nil {
+		return fmt.Errorf("failed to execute insert: %v", err)
+	}
+
+	return nil
 }
 
 /*

@@ -10,15 +10,70 @@ import (
 	"time"
 	"todoApp/internal/db"
 	"todoApp/internal/env"
+	errorpkg "todoApp/internal/error"
 	"todoApp/internal/models"
 
 	"github.com/stretchr/testify/assert"
 )
 
+func TestDeleteHandler(t *testing.T) {
+	// deleteテスト用のデータを作成
+	untilTime := "2024-12-31"
+	untilDate, err := time.Parse("2006-01-02", untilTime)
+	errorpkg.CheckError(err)
+
+	testData := models.RegisterRequest{
+		Content: "todo test content",
+		Until:   untilDate,
+	}
+
+	// testデータのインサート
+	err = db.InsertById(1, testData)
+	if err != nil {
+		t.Fatalf("Failed to insert query: %v", err)
+	}
+
+	// delete用のリクエストデータを作成
+	reqBody := models.DeleteRequest{
+		ID: 1,
+	}
+
+	jsonData, err := json.Marshal((reqBody))
+	if err != nil {
+		t.Fatalf("Failed to marshal request: %v", err)
+	}
+
+	req, err := http.NewRequest("POST", "/delete", bytes.NewBuffer(jsonData))
+	if err != nil {
+		t.Fatalf("Failed to delete request: %v", err)
+	}
+	req.Header.Set("Content-Type", "application/json")
+
+	rr := httptest.NewRecorder()
+
+	handler := http.HandlerFunc(deleteHandler)
+	handler.ServeHTTP(rr, req)
+
+	if status := rr.Code; status != http.StatusOK {
+		t.Errorf("Handler returned wrong status code: got %v want %v", status, http.StatusOK)
+	}
+
+	var resBody models.Response
+	if err := json.NewDecoder(rr.Body).Decode(&resBody); err != nil {
+		t.Fatalf("Failed to decode response: %v", err)
+	}
+
+	expectedMessage := "SUCCESS"
+	if resBody.Result != expectedMessage {
+		t.Errorf("Handler returned unexpected body: got %v want %v", resBody.Result, expectedMessage)
+	}
+}
+
 func TestRegisterHandler(t *testing.T) {
 	// リクエスト用のJSONデータの作成
 	untilTime := "2024-12-31"
 	untilDate, err := time.Parse("2006-01-02", untilTime)
+	errorpkg.CheckError(err)
 
 	reqBody := models.RegisterRequest{
 		Content: "todo test content",

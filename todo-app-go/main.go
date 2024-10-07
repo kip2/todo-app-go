@@ -17,6 +17,33 @@ func main() {
 }
 
 /*
+リクエストで指定したIDのデータを削除するハンドラ
+*/
+func deleteHandler(w http.ResponseWriter, r *http.Request) {
+	var req models.DeleteRequest
+	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
+		http.Error(w, "Bad request", http.StatusBadRequest)
+		return
+	}
+
+	response := models.Response{
+		Result: "SUCCESS",
+	}
+
+	// DBの削除処理を行う
+	err := db.Delete(req)
+
+	if err != nil {
+		response = models.Response{
+			Result: "Data delete error.",
+		}
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+	json.NewEncoder(w).Encode(response)
+}
+
+/*
 リクエストに含まれるデータをDBに登録するハンドラ
 */
 func registerHandler(w http.ResponseWriter, r *http.Request) {
@@ -32,7 +59,7 @@ func registerHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// DBへの登録処理を行う
-	_, err := db.Insert(req)
+	err := db.Insert(req)
 	// DB登録処理が失敗なら、エラーメッセージを格納したResponseデータに変更
 	if err != nil {
 		response = models.Response{
