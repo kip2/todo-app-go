@@ -2,6 +2,10 @@ package models
 
 import "time"
 
+type DeleteRequest struct {
+	ID int `db:"ID"`
+}
+
 type RegisterRequest struct {
 	Content string    `db:"Content"`
 	Until   time.Time `db:"Until"`
