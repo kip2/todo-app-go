@@ -16,6 +16,9 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
+/*
+Deleteエンドポイントのテストコード
+*/
 func TestDeleteHandler(t *testing.T) {
 	// deleteテスト用のデータを作成
 	untilTime := "2024-12-31"
@@ -69,6 +72,9 @@ func TestDeleteHandler(t *testing.T) {
 	}
 }
 
+/*
+登録エンドポイントのテスト
+*/
 func TestRegisterHandler(t *testing.T) {
 	// リクエスト用のJSONデータの作成
 	untilTime := "2024-12-31"
