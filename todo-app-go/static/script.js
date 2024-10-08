@@ -1,3 +1,3 @@
 window.onload = function() {
-    document.getElementById('message').textContent = 'Hello from JavaScript!';
+    // document.getElementById('message').textContent = 'Hello from JavaScript!';
 };
