@@ -13,6 +13,10 @@ func main() {
 	// リクエストしたデータを登録するハンドラのバインド
 	http.HandleFunc("/register", registerHandler)
 
+	// 画面を返すエンドポイント
+	fs := http.FileServer(http.Dir("./static"))
+	http.Handle("/", fs)
+
 	http.ListenAndServe(":8080", nil)
 }
 
