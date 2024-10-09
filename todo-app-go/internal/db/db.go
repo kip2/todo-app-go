@@ -28,6 +28,35 @@ func SelectAll() []models.Todo {
 }
 
 /*
+指定したIDのデータを更新する。
+*/
+func Update(data models.UpdateRequest) error {
+	db := CreateDBConnection(envVar)
+	defer db.Close()
+
+	// クエリ実行
+	result, err := db.Exec("UPDATE todos SET Done = IF(Done = 1, 0, 1) WHERE id = ?", data.ID)
+	if err != nil {
+		return fmt.Errorf("failed to execute update: %v", err)
+	}
+
+	// 実際に更新した行数を取得する
+	rowsAffected, err := result.RowsAffected()
+	// 更新した行数取得に失敗した場合のエラーを返す
+	if err != nil {
+		return fmt.Errorf("failed to retrieve affected rows: %v", err)
+	}
+
+	// 更新した行数が0ならエラーを返す
+	if rowsAffected == 0 {
+		return fmt.Errorf("no rows updated, ID %d not found", data.ID)
+	}
+
+	// 正常終了のため、nilを返す
+	return nil
+}
+
+/*
 指定されたIDのデータを削除する
 */
 func Delete(data models.DeleteRequest) error {
