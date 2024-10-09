@@ -14,6 +14,8 @@ func main() {
 	http.HandleFunc("/register", registerHandler)
 	// リクエストしたデータを削除するハンドラのバインド
 	http.HandleFunc("/delete", deleteHandler)
+	// リクエストしたデータを更新するハンドラのバインド
+	http.HandleFunc("/update", updateHandler)
 
 	// 画面を返すエンドポイント
 	fs := http.FileServer(http.Dir("./static"))
