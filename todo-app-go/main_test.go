@@ -106,14 +106,14 @@ func TestDeleteHandler(t *testing.T) {
 	}
 
 	// testデータのインサート
-	err = db.InsertById(1, testData)
+	lastInsertID, err := db.Insert(testData)
 	if err != nil {
 		t.Fatalf("Failed to insert query: %v", err)
 	}
 
 	// delete用のリクエストデータを作成
 	reqBody := models.DeleteRequest{
-		ID: 1,
+		ID: int(lastInsertID),
 	}
 
 	jsonData, err := json.Marshal((reqBody))
