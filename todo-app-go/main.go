@@ -12,6 +12,8 @@ func main() {
 	http.HandleFunc("/todos", todosHandler)
 	// リクエストしたデータを登録するハンドラのバインド
 	http.HandleFunc("/register", registerHandler)
+	// リクエストしたデータを削除するハンドラのバインド
+	http.HandleFunc("/delete", deleteHandler)
 
 	// 画面を返すエンドポイント
 	fs := http.FileServer(http.Dir("./static"))
