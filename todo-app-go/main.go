@@ -23,6 +23,33 @@ func main() {
 }
 
 /*
+リクエストで指定したIDのデータの状態を更新するハンドラ
+*/
+func updateHandler(w http.ResponseWriter, r *http.Request) {
+	var req models.UpdateRequest
+	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
+		http.Error(w, "Bad request", http.StatusBadRequest)
+		return
+	}
+
+	response := models.Response{
+		Result: "SUCCESS",
+	}
+
+	// データの更新を行う
+	err := db.Update(req)
+
+	if err != nil {
+		response = models.Response{
+			Result: "Data update error.",
+		}
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+	json.NewEncoder(w).Encode(response)
+}
+
+/*
 リクエストで指定したIDのデータを削除するハンドラ
 */
 func deleteHandler(w http.ResponseWriter, r *http.Request) {
