@@ -103,16 +103,21 @@ func InsertById(id int, data models.RegisterRequest) error {
 /*
 データをDBにINSERTする
 */
-func Insert(data models.RegisterRequest) error {
+func Insert(data models.RegisterRequest) (int64, error) {
 	db := CreateDBConnection(envVar)
 	defer db.Close()
 
-	_, err := db.Exec("INSERT INTO todos (Content, Until) VALUES (?, ?)", data.Content, data.Until)
+	result, err := db.Exec("INSERT INTO todos (Content, Until) VALUES (?, ?)", data.Content, data.Until)
 	if err != nil {
-		return fmt.Errorf("failed to execute insert: %v", err)
+		return 0, fmt.Errorf("failed to execute insert: %v", err)
 	}
 
-	return nil
+	lastInsertID, err := result.LastInsertId()
+	if err != nil {
+		return 0, fmt.Errorf("failed to retrieve last insert ID: %v", err)
+	}
+
+	return lastInsertID, nil
 }
 
 /*

@@ -94,7 +94,7 @@ func registerHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// DBへの登録処理を行う
-	err := db.Insert(req)
+	_, err := db.Insert(req)
 	// DB登録処理が失敗なら、エラーメッセージを格納したResponseデータに変更
 	if err != nil {
 		response = models.Response{

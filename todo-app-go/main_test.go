@@ -31,14 +31,17 @@ func TestUpdateHandler(t *testing.T) {
 	}
 
 	// testデータのインサート
-	err = db.InsertById(1, testData)
+	lastInsertID, err := db.Insert(testData)
 	if err != nil {
-		t.Fatalf("Failed to insert query: %v", err)
+		t.Fatalf("Failed to insert test data: %v", err)
 	}
+
+	// 更新前のデータを取得
+	originalTodo := db.SelectById(int(lastInsertID))
 
 	// update用のリクエストデータを作成
 	reqBody := models.UpdateRequest{
-		ID: 1,
+		ID: int(lastInsertID),
 	}
 
 	jsonData, err := json.Marshal((reqBody))
@@ -71,9 +74,15 @@ func TestUpdateHandler(t *testing.T) {
 		t.Errorf("Handler returned unexpected body: got %v want %v", resBody.Result, expectedMessage)
 	}
 
+	// 更新が実際に行われたかをDBから確認する
+	updatedTodo := db.SelectById(int(lastInsertID))
+	if updatedTodo.Done == originalTodo.Done {
+		t.Errorf("Todo 'Done' field was not updated: got %v, expected different value from %v", updatedTodo.Done, originalTodo.Done)
+	}
+
 	// テストデータ削除用にデータを作成
 	deleteId := models.DeleteRequest{
-		ID: 1,
+		ID: int(lastInsertID),
 	}
 	err = db.Delete(deleteId)
 	if err != nil {
