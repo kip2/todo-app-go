@@ -17,6 +17,72 @@ import (
 )
 
 /*
+updateエンドポイントのテストコード
+*/
+func TestUpdateHandler(t *testing.T) {
+	// deleteテスト用のデータを作成
+	untilTime := "2024-12-31"
+	untilDate, err := time.Parse("2006-01-02", untilTime)
+	errorpkg.CheckError(err)
+
+	testData := models.RegisterRequest{
+		Content: "todo test content",
+		Until:   untilDate,
+	}
+
+	// testデータのインサート
+	err = db.InsertById(1, testData)
+	if err != nil {
+		t.Fatalf("Failed to insert query: %v", err)
+	}
+
+	// update用のリクエストデータを作成
+	reqBody := models.UpdateRequest{
+		ID: 1,
+	}
+
+	jsonData, err := json.Marshal((reqBody))
+	if err != nil {
+		t.Fatalf("Failed to marshal request: %v", err)
+	}
+
+	req, err := http.NewRequest("POST", "/update", bytes.NewBuffer(jsonData))
+	if err != nil {
+		t.Fatalf("Failed to update request: %v", err)
+	}
+	req.Header.Set("Content-Type", "application/json")
+
+	rr := httptest.NewRecorder()
+
+	handler := http.HandlerFunc(updateHandler)
+	handler.ServeHTTP(rr, req)
+
+	if status := rr.Code; status != http.StatusOK {
+		t.Errorf("Handler returned wrong status code: got %v want %v", status, http.StatusOK)
+	}
+
+	var resBody models.Response
+	if err := json.NewDecoder(rr.Body).Decode(&resBody); err != nil {
+		t.Fatalf("Failed to decode response: %v", err)
+	}
+
+	expectedMessage := "SUCCESS"
+	if resBody.Result != expectedMessage {
+		t.Errorf("Handler returned unexpected body: got %v want %v", resBody.Result, expectedMessage)
+	}
+
+	// テストデータ削除用にデータを作成
+	deleteId := models.DeleteRequest{
+		ID: 1,
+	}
+	err = db.Delete(deleteId)
+	if err != nil {
+		t.Fatalf("Failed to delete test data: %v", err)
+	}
+
+}
+
+/*
 Deleteエンドポイントのテストコード
 */
 func TestDeleteHandler(t *testing.T) {

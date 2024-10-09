@@ -2,6 +2,10 @@ package models
 
 import "time"
 
+type UpdateRequest struct {
+	ID int `db:"ID"`
+}
+
 type DeleteRequest struct {
 	ID int `db:"ID"`
 }
