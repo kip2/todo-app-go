@@ -49,7 +49,7 @@ func TestUpdateHandler(t *testing.T) {
 		t.Fatalf("Failed to marshal request: %v", err)
 	}
 
-	req, err := http.NewRequest("POST", "/update", bytes.NewBuffer(jsonData))
+	req, err := http.NewRequest("POST", "/api/update", bytes.NewBuffer(jsonData))
 	if err != nil {
 		t.Fatalf("Failed to update request: %v", err)
 	}
@@ -121,7 +121,7 @@ func TestDeleteHandler(t *testing.T) {
 		t.Fatalf("Failed to marshal request: %v", err)
 	}
 
-	req, err := http.NewRequest("POST", "/delete", bytes.NewBuffer(jsonData))
+	req, err := http.NewRequest("POST", "/api/delete", bytes.NewBuffer(jsonData))
 	if err != nil {
 		t.Fatalf("Failed to delete request: %v", err)
 	}
@@ -167,7 +167,7 @@ func TestRegisterHandler(t *testing.T) {
 	}
 
 	// JSONリクエストの作成
-	req, err := http.NewRequest("POST", "/register", bytes.NewBuffer(jsonData))
+	req, err := http.NewRequest("POST", "/api/register", bytes.NewBuffer(jsonData))
 	if err != nil {
 		t.Fatalf("Failed to create request: %v", err)
 	}

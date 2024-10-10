@@ -9,13 +9,13 @@ import (
 
 func main() {
 	// リスト(todo)の一覧を取得するハンドラのバインド
-	http.HandleFunc("/todos", todosHandler)
+	http.HandleFunc("/api/todos", todosHandler)
 	// リクエストしたデータを登録するハンドラのバインド
-	http.HandleFunc("/register", registerHandler)
+	http.HandleFunc("/api/register", registerHandler)
 	// リクエストしたデータを削除するハンドラのバインド
-	http.HandleFunc("/delete", deleteHandler)
+	http.HandleFunc("/api/delete", deleteHandler)
 	// リクエストしたデータを更新するハンドラのバインド
-	http.HandleFunc("/update", updateHandler)
+	http.HandleFunc("/api/update", updateHandler)
 
 	// 画面を返すエンドポイント
 	fs := http.FileServer(http.Dir("./static"))
