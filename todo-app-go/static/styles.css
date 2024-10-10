@@ -1,0 +1,16 @@
+.todoItem {
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    border: 1px solid #ddd;
+    margin-top: 10px;
+}
+
+.todoItem p {
+    margin: 0;
+    margin-right: 20px;
+}
+
+.todoItem button {
+    margin-right: 20px;
+}
