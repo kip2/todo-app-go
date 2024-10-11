@@ -23,6 +23,7 @@ function displayTodo(todo) {
     const todoItem = document.createElement("div")
     // classとしてtodoItemを追加
     todoItem.classList.add("todoItem")
+    todoItem.setAttribute("data-id", todo.ID)
 
     // Contentの表示
     const contentElement = document.createElement("p")
