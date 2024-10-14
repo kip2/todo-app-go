@@ -15,7 +15,7 @@ Go言語で作成したTodoアプリです。
 
 ## 作業ログ
 
-作業ログはZennのスクラップ機能を用いて行っています。
+作業ログはZennのスクラップに残しています。
 
 [作業ログ@ZennScrap](https://zenn.dev/kip2/scraps/177cb54290d240)
 
