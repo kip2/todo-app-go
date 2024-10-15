@@ -31,13 +31,7 @@ function displayTodo(todo) {
     todoItem.appendChild(contentElement)
 
     // Doneボタンを表示
-    const doneButton = document.createElement("button")
-    doneButton.textContent = !todo.Done ? "終了" : "戻す"
-    doneButton.onclick = function() {
-        // onclickは仮置き
-        // 後ほどAPIへのフェッチ処理に変更する
-        alert("Todo is marked as done!")
-    }
+    const doneButton = createDoneButton(todo.Done)
     todoItem.appendChild(doneButton)
 
     // Deleteボタンの設置
@@ -51,4 +45,16 @@ function displayTodo(todo) {
 
     // /Todoの要素をtodoListに追加
     todoList.appendChild(todoItem)
+}
+
+function createDoneButton (isDone) {
+    const doneButton = document.createElement("button")
+    doneButton.textContent = isDone ? "タスク完了" : "未完了に戻す"
+    doneButton.onclick = function() {
+        // onclickは仮置き
+        // 後ほどAPIへのフェッチ処理に変更する
+        alert("Todo is marked as done!")
+    }
+
+    return doneButton
 }
