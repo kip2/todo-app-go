@@ -35,16 +35,21 @@ function displayTodo(todo) {
     todoItem.appendChild(doneButton)
 
     // Deleteボタンの設置
+    const deleteButton = createDeleteButton()
+    todoItem.appendChild(deleteButton)
+
+    // /Todoの要素をtodoListに追加
+    todoList.appendChild(todoItem)
+}
+
+function createDeleteButton () {
     const deleteButton = document.createElement("button")
     deleteButton.textContent = "削除"
     deleteButton.onclick = function() {
         // onclickは仮置き
         alert("Click delete button!")
     }
-    todoItem.appendChild(deleteButton)
-
-    // /Todoの要素をtodoListに追加
-    todoList.appendChild(todoItem)
+    return deleteButton
 }
 
 function createDoneButton (isDone) {
