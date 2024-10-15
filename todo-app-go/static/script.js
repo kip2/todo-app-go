@@ -1,4 +1,5 @@
 const apiTodoListEndpoint = "http://localhost:8080/api/todos"
+const apiDeleteEndpoint = "http://localhost:8080/api/delete"
 
 fetch(apiTodoListEndpoint)
     .then(response => {
@@ -47,12 +48,50 @@ function createDeleteButton (id) {
     const deleteButton = document.createElement("button")
     deleteButton.textContent = "削除"
     deleteButton.onclick = function() {
-        removeTodoItem(id)
+        deleteTodoItem(id)
     }
     return deleteButton
 }
 
-function removeTodoItem(id) {
+function deleteTodoItem(id) {
+    // リクエストする対象のIDをJSONに詰める
+    const requestData = {
+        ID: id
+    }
+
+    // /api/deleteに対して、リクエストを送る
+    fetch(apiDeleteEndpoint, {
+        method: "DELETE",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(requestData)
+    })
+    .then((response) => {
+        // responseがエラーの場合
+        if (!response.ok) {
+            throw new Error("Failed to delete Todo item")
+        }
+        return response.json()
+    })
+    .then(responseJson => {
+        // responseで返ってきたJSONの内容により処理を分岐
+        // 成功の場合
+        if (responseJson.result === "SUCCESS") {
+            removeTodoElement(id)
+        // 失敗の場合
+        } else {
+            alert(`Error: ${responseJson.result}`)
+        }
+    })
+    // フェッチそのもののエラーをキャッチする
+    .catch(error => {
+        console.error("There was a problem with the fetch operation:", error)
+    })
+
+}
+
+function removeTodoElement(id) {
     const todoItem = document.querySelector(`[data-id='${id}']`)
     if (todoItem) {
         todoItem.remove()
