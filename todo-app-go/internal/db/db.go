@@ -28,7 +28,7 @@ func SelectAll() []models.Todo {
 }
 
 /*
-指定したIDのデータを更新する。
+指定したIDのDoneを更新する。
 */
 func Update(data models.UpdateRequest) error {
 	db := CreateDBConnection(envVar)

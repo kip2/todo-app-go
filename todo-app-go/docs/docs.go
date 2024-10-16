@@ -27,7 +27,7 @@ const docTemplate = `{
                 "tags": [
                     "todos"
                 ],
-                "summary": "Update a todo",
+                "summary": "IDに紐づくTodoのDoneを更新する",
                 "parameters": [
                     {
                         "description": "Update Todo",

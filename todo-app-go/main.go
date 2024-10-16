@@ -37,7 +37,7 @@ func main() {
 }
 
 // updateHandler godoc
-// @Summary Update a todo
+// @Summary IDに紐づくTodoのDoneを更新する
 // @Description Update the status of a todo by ID
 // @Tags todos
 // @Accept json
