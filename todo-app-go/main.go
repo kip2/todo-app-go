@@ -13,7 +13,7 @@ import (
 
 // @title Go Todo API
 // @version 1.0
-// @description This is a sample Todo API.
+// @description TodoアプリのバックエンドAPIです。
 // @host localhost:8080
 // @BasePath /api
 func main() {

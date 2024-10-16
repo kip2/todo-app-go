@@ -1,7 +1,7 @@
 {
     "swagger": "2.0",
     "info": {
-        "description": "This is a sample Todo API.",
+        "description": "TodoアプリのバックエンドAPIです。",
         "title": "Go Todo API",
         "contact": {},
         "version": "1.0"

@@ -13,7 +13,7 @@ definitions:
 host: localhost:8080
 info:
   contact: {}
-  description: This is a sample Todo API.
+  description: TodoアプリのバックエンドAPIです。
   title: Go Todo API
   version: "1.0"
 paths:

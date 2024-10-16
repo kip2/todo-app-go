@@ -89,7 +89,7 @@ var SwaggerInfo = &swag.Spec{
 	BasePath:         "/api",
 	Schemes:          []string{},
 	Title:            "Go Todo API",
-	Description:      "This is a sample Todo API.",
+	Description:      "TodoアプリのバックエンドAPIです。",
 	InfoInstanceName: "swagger",
 	SwaggerTemplate:  docTemplate,
 	LeftDelim:        "{{",
