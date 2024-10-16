@@ -1,0 +1,50 @@
+basePath: /api
+definitions:
+  models.Response:
+    properties:
+      result:
+        type: string
+    type: object
+  models.UpdateRequest:
+    properties:
+      id:
+        type: integer
+    type: object
+host: localhost:8080
+info:
+  contact: {}
+  description: This is a sample Todo API.
+  title: Go Todo API
+  version: "1.0"
+paths:
+  /api/update:
+    put:
+      consumes:
+      - application/json
+      description: Update the status of a todo by ID
+      parameters:
+      - description: Update Todo
+        in: body
+        name: updateRequest
+        required: true
+        schema:
+          $ref: '#/definitions/models.UpdateRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Response'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.Response'
+      summary: Update a todo
+      tags:
+      - todos
+swagger: "2.0"

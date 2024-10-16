@@ -5,9 +5,21 @@ import (
 	"net/http"
 	"todoApp/internal/db"
 	"todoApp/internal/models"
+
+	_ "todoApp/docs"
+
+	"github.com/swaggo/http-swagger"
 )
 
+// @title Go Todo API
+// @version 1.0
+// @description This is a sample Todo API.
+// @host localhost:8080
+// @BasePath /api
 func main() {
+	// swaggerドキュメントの設定
+	http.HandleFunc("/swagger/", httpSwagger.WrapHandler)
+
 	// リスト(todo)の一覧を取得するハンドラのバインド
 	http.HandleFunc("/api/todos", todosHandler)
 	// リクエストしたデータを登録するハンドラのバインド
@@ -24,6 +36,17 @@ func main() {
 	http.ListenAndServe(":8080", nil)
 }
 
+// updateHandler godoc
+// @Summary Update a todo
+// @Description Update the status of a todo by ID
+// @Tags todos
+// @Accept json
+// @Produce json
+// @Param updateRequest body models.UpdateRequest true "Update Todo"
+// @Success 200 {object} models.Response
+// @Failure 400 {object} models.Response
+// @Failure 500 {object} models.Response
+// @Router /api/update [put]
 /*
 リクエストで指定したIDのデータの状態を更新するハンドラ
 */
