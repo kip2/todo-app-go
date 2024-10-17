@@ -158,9 +158,9 @@ func registerHandler(w http.ResponseWriter, r *http.Request) {
 // @Tags todos
 // @Accept json
 // @Produce json
-// @Success 200 {object} models.Response
-// @Failure 400 {object} models.Response
-// @Failure 500 {object} models.Response
+// @Success 200 {object} models.Todo
+// @Failure 400 {object} models.Todo
+// @Failure 500 {object} models.Todo
 // @Router /api/todos [get]
 /*
 DBからTodoの全リストを取得して、レスポンスするハンドラ
