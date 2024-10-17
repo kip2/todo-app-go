@@ -1,5 +1,17 @@
 basePath: /api
 definitions:
+  models.DeleteRequest:
+    properties:
+      id:
+        type: integer
+    type: object
+  models.RegisterRequest:
+    properties:
+      content:
+        type: string
+      until:
+        type: string
+    type: object
   models.Response:
     properties:
       result:
@@ -17,11 +29,94 @@ info:
   title: Go Todo API
   version: "1.0"
 paths:
+  /api/delete:
+    delete:
+      consumes:
+      - application/json
+      description: IDに紐づくTodoをDBから削除する
+      parameters:
+      - description: Delete Todo
+        in: body
+        name: deleteRequest
+        required: true
+        schema:
+          $ref: '#/definitions/models.DeleteRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Response'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.Response'
+      summary: IDに紐づくTodoを削除する
+      tags:
+      - todos
+  /api/register:
+    post:
+      consumes:
+      - application/json
+      description: リクエストに含まれるTodoのデータをDBに登録する
+      parameters:
+      - description: Register Todo
+        in: body
+        name: registerRequest
+        required: true
+        schema:
+          $ref: '#/definitions/models.RegisterRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Response'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.Response'
+      summary: TodoをDBに登録する
+      tags:
+      - todos
+  /api/todos:
+    get:
+      consumes:
+      - application/json
+      description: DBに登録されているすべてのTodoをリストで取得する
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Response'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.Response'
+      summary: Todoのリストを取得する
+      tags:
+      - todos
   /api/update:
     put:
       consumes:
       - application/json
-      description: Update the status of a todo by ID
+      description: IDに紐づいているTodoのステータスを更新する。呼び出す度に、Doneのステータスをトグルする。
       parameters:
       - description: Update Todo
         in: body

@@ -8,7 +8,7 @@ import (
 
 	_ "todoApp/docs"
 
-	"github.com/swaggo/http-swagger"
+	httpSwagger "github.com/swaggo/http-swagger"
 )
 
 // @title Go Todo API
@@ -38,7 +38,7 @@ func main() {
 
 // updateHandler godoc
 // @Summary IDに紐づくTodoのDoneを更新する
-// @Description Update the status of a todo by ID
+// @Description IDに紐づいているTodoのステータスを更新する。呼び出す度に、Doneのステータスをトグルする。
 // @Tags todos
 // @Accept json
 // @Produce json
@@ -74,6 +74,17 @@ func updateHandler(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(response)
 }
 
+// Handler godoc
+// @Summary IDに紐づくTodoを削除する
+// @Description IDに紐づくTodoをDBから削除する
+// @Tags todos
+// @Accept json
+// @Produce json
+// @Param deleteRequest body models.DeleteRequest true "Delete Todo"
+// @Success 200 {object} models.Response
+// @Failure 400 {object} models.Response
+// @Failure 500 {object} models.Response
+// @Router /api/delete [delete]
 /*
 リクエストで指定したIDのデータを削除するハンドラ
 */
@@ -101,6 +112,17 @@ func deleteHandler(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(response)
 }
 
+// registerhandler godoc
+// @Summary TodoをDBに登録する
+// @Description リクエストに含まれるTodoのデータをDBに登録する
+// @Tags todos
+// @Accept json
+// @Produce json
+// @Param registerRequest body models.RegisterRequest true "Register Todo"
+// @Success 200 {object} models.Response
+// @Failure 400 {object} models.Response
+// @Failure 500 {object} models.Response
+// @Router /api/register [post]
 /*
 リクエストに含まれるデータをDBに登録するハンドラ
 */
@@ -130,6 +152,16 @@ func registerHandler(w http.ResponseWriter, r *http.Request) {
 
 }
 
+// todosHandler godoc
+// @Summary Todoのリストを取得する
+// @Description DBに登録されているすべてのTodoをリストで取得する
+// @Tags todos
+// @Accept json
+// @Produce json
+// @Success 200 {object} models.Response
+// @Failure 400 {object} models.Response
+// @Failure 500 {object} models.Response
+// @Router /api/todos [get]
 /*
 DBからTodoの全リストを取得して、レスポンスするハンドラ
 */
