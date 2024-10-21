@@ -1,5 +1,11 @@
+// endpoint
 const apiTodoListEndpoint = "http://localhost:8080/api/todos"
 const apiDeleteEndpoint = "http://localhost:8080/api/delete"
+const apiUpdateEndpoint = "http://localhost:8080/api/update"
+
+// button text
+const taskDoneButtonText = "未完了に戻す"
+const taskNotDoneButtonText = "タスク完了"
 
 fetch(apiTodoListEndpoint)
     .then(response => {
@@ -32,7 +38,7 @@ function displayTodo(todo) {
     todoItem.appendChild(contentElement)
 
     // Doneボタンを表示
-    const doneButton = createDoneButton(todo.Done)
+    const doneButton = createDoneButton(todo.ID, todo.Done)
     todoItem.appendChild(doneButton)
 
     // Deleteボタンの設置
@@ -98,14 +104,65 @@ function removeTodoElement(id) {
     }
 }
 
-function createDoneButton (isDone) {
+function createDoneButton (id, isDone) {
     const doneButton = document.createElement("button")
-    doneButton.textContent = isDone ? "タスク完了" : "未完了に戻す"
+    doneButton.textContent = isDone ? taskDoneButtonText : taskNotDoneButtonText 
     doneButton.onclick = function() {
-        // onclickは仮置き
-        // 後ほどAPIへのフェッチ処理に変更する
-        alert("Todo is marked as done!")
+        updateDoneButton(id)
     }
 
     return doneButton
 }
+
+function updateDoneButton(id) {
+    // リクエストする対象のIDをJSONに詰める
+    const requestData = {
+        ID: id
+    }
+
+    // /api/deleteに対して、リクエストを送る
+    fetch(apiUpdateEndpoint, {
+        method: "PUT",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(requestData)
+    })
+    .then((response) => {
+        // responseがエラーの場合
+        if (!response.ok) {
+            throw new Error("Failed to update Todo item")
+        }
+        return response.json()
+    })
+    .then(responseJson => {
+        // responseで返ってきたJSONの内容により処理を分岐
+        // 成功の場合
+        if (responseJson.result === "SUCCESS") {
+            toggleUpdateButton(id)
+        // 失敗の場合
+        } else {
+            alert(`Error: ${responseJson.result}`)
+        }
+    })
+    // フェッチそのもののエラーをキャッチする
+    .catch(error => {
+        console.error("There was a problem with the fetch operation:", error)
+    })
+}
+
+function toggleUpdateButton(id) {
+    const todoItem = document.querySelector(`[data-id='${id}']`)
+    if (todoItem) {
+        const doneButton = todoItem.querySelector("button")
+
+        if (doneButton) {
+            if(doneButton.textContent === taskDoneButtonText) {
+                doneButton.textContent = taskNotDoneButtonText
+            } else if (doneButton.textContent === taskNotDoneButtonText) {
+                doneButton.textContent = taskDoneButtonText
+            }
+        }
+    } 
+}
+
