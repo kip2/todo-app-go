@@ -203,9 +203,6 @@ const docTemplate = `{
             "properties": {
                 "content": {
                     "type": "string"
-                },
-                "until": {
-                    "type": "string"
                 }
             }
         },
@@ -231,9 +228,6 @@ const docTemplate = `{
                 },
                 "id": {
                     "type": "integer"
-                },
-                "until": {
-                    "type": "string"
                 },
                 "updatedAt": {
                     "type": "string"

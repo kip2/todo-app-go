@@ -9,8 +9,6 @@ definitions:
     properties:
       content:
         type: string
-      until:
-        type: string
     type: object
   models.Response:
     properties:
@@ -27,8 +25,6 @@ definitions:
         type: boolean
       id:
         type: integer
-      until:
-        type: string
       updatedAt:
         type: string
     type: object
