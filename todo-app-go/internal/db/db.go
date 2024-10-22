@@ -92,7 +92,7 @@ func InsertById(id int, data models.RegisterRequest) error {
 	db := CreateDBConnection(envVar)
 	defer db.Close()
 
-	_, err := db.Exec("INSERT INTO todos (ID, Content, Until) VALUES (?, ?, ?)", id, data.Content, data.Until)
+	_, err := db.Exec("INSERT INTO todos (ID, Content) VALUES (?, ?)", id, data.Content)
 	if err != nil {
 		return fmt.Errorf("failed to execute insert: %v", err)
 	}
@@ -107,7 +107,7 @@ func Insert(data models.RegisterRequest) (int64, error) {
 	db := CreateDBConnection(envVar)
 	defer db.Close()
 
-	result, err := db.Exec("INSERT INTO todos (Content, Until) VALUES (?, ?)", data.Content, data.Until)
+	result, err := db.Exec("INSERT INTO todos (Content) VALUES (?)", data.Content)
 	if err != nil {
 		return 0, fmt.Errorf("failed to execute insert: %v", err)
 	}

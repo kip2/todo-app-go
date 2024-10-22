@@ -7,10 +7,8 @@ import (
 	"net/http/httptest"
 	"os"
 	"testing"
-	"time"
 	"todoApp/internal/db"
 	"todoApp/internal/env"
-	errorpkg "todoApp/internal/error"
 	"todoApp/internal/models"
 
 	"github.com/stretchr/testify/assert"
@@ -21,13 +19,8 @@ updateエンドポイントのテストコード
 */
 func TestUpdateHandler(t *testing.T) {
 	// deleteテスト用のデータを作成
-	untilTime := "2024-12-31"
-	untilDate, err := time.Parse("2006-01-02", untilTime)
-	errorpkg.CheckError(err)
-
 	testData := models.RegisterRequest{
 		Content: "todo test content",
-		Until:   untilDate,
 	}
 
 	// testデータのインサート
@@ -96,13 +89,8 @@ Deleteエンドポイントのテストコード
 */
 func TestDeleteHandler(t *testing.T) {
 	// deleteテスト用のデータを作成
-	untilTime := "2024-12-31"
-	untilDate, err := time.Parse("2006-01-02", untilTime)
-	errorpkg.CheckError(err)
-
 	testData := models.RegisterRequest{
 		Content: "todo test content",
-		Until:   untilDate,
 	}
 
 	// testデータのインサート
@@ -152,13 +140,8 @@ func TestDeleteHandler(t *testing.T) {
 */
 func TestRegisterHandler(t *testing.T) {
 	// リクエスト用のJSONデータの作成
-	untilTime := "2024-12-31"
-	untilDate, err := time.Parse("2006-01-02", untilTime)
-	errorpkg.CheckError(err)
-
 	reqBody := models.RegisterRequest{
 		Content: "todo test content",
-		Until:   untilDate,
 	}
 
 	jsonData, err := json.Marshal(reqBody)
@@ -224,8 +207,8 @@ func TestDBQuery(t *testing.T) {
 }
 
 func TestLoadEnv(t *testing.T) {
-	os.Setenv("DATABASE", "test-dsn")
-	dsn := env.LoadEnv("DATABASE")
+	os.Setenv("DATABASE_TEST", "test-dsn")
+	dsn := env.LoadEnv("DATABASE_TEST")
 	assert.Equal(t, "test-dsn", dsn, "環境変数の値が正しく読み込まれていません")
 }
 
