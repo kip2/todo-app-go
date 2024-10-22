@@ -7,6 +7,11 @@ const apiUpdateEndpoint = "http://localhost:8080/api/update"
 const taskDoneButtonText = "未完了に戻す"
 const taskNotDoneButtonText = "タスク完了"
 
+document.getElementById("createButton").addEventListener("click", function() {
+    alert("Button clicked!");
+});
+
+
 fetch(apiTodoListEndpoint)
     .then(response => {
         if (!response.ok) {
