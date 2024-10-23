@@ -119,9 +119,9 @@ func deleteHandler(w http.ResponseWriter, r *http.Request) {
 // @Accept json
 // @Produce json
 // @Param registerRequest body models.RegisterRequest true "Register Todo"
-// @Success 200 {object} models.Response
-// @Failure 400 {object} models.Response
-// @Failure 500 {object} models.Response
+// @Success 200 {object} models.Todo
+// @Failure 400 {object} models.Todo
+// @Failure 500 {object} models.Todo
 // @Router /api/register [post]
 /*
 リクエストに含まれるデータをDBに登録するハンドラ
@@ -133,23 +133,23 @@ func registerHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// 成功の場合のResponseデータを作成
-	response := models.Response{
-		Result: "SUCCESS",
-	}
+	// エラー時のレスポンス用の変数を宣言
+	var errResponse models.Response
 
 	// DBへの登録処理を行う
-	_, err := db.Insert(req)
+	insertId, err := db.Insert(req)
 	// DB登録処理が失敗なら、エラーメッセージを格納したResponseデータに変更
 	if err != nil {
-		response = models.Response{
+		errResponse = models.Response{
 			Result: "Data register error.",
 		}
+		w.Header().Set("Content-Type", "application/json")
+		json.NewEncoder(w).Encode(errResponse)
+	} else {
+		response := db.SelectById(int(insertId))
+		w.Header().Set("Content-Type", "application/json")
+		json.NewEncoder(w).Encode(response)
 	}
-
-	w.Header().Set("Content-Type", "application/json")
-	json.NewEncoder(w).Encode(response)
-
 }
 
 // todosHandler godoc

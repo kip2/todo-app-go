@@ -169,14 +169,14 @@ func TestRegisterHandler(t *testing.T) {
 	}
 
 	// レスポンスの内容を確認
-	var resBody models.Response
+	var resBody models.Todo
 	if err := json.NewDecoder(rr.Body).Decode(&resBody); err != nil {
 		t.Fatalf("Failed to decode response: %v", err)
 	}
 
-	expectedMessage := "SUCCESS"
-	if resBody.Result != expectedMessage {
-		t.Errorf("Handler returned unexpected body: got %v want %v", resBody.Result, expectedMessage)
+	expectedMessage := "todo test content"
+	if resBody.Content != expectedMessage {
+		t.Errorf("Handler returned unexpected body: got %v want %v", resBody.Content, expectedMessage)
 	}
 }
 
