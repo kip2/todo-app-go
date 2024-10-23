@@ -2,12 +2,12 @@
 const apiTodoListEndpoint = "http://localhost:8080/api/todos"
 const apiDeleteEndpoint = "http://localhost:8080/api/delete"
 const apiUpdateEndpoint = "http://localhost:8080/api/update"
+const apiRegisterEndpoint = "http://localhost:8080/api/register"
 
 // button text
 const taskDoneButtonText = "未完了に戻す"
 const taskNotDoneButtonText = "タスク完了"
 
-const apiRegisterEndpoint = "http://localhost:8080/api/register"
 
 document.getElementById("createButton").addEventListener("click", function() {
     // inputの値を取得
