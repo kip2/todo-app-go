@@ -42,8 +42,8 @@ document.getElementById("createButton").addEventListener("click", function() {
         // responseで返ってきたJSONの内容により処理を分岐
         // 成功の場合
         if (!responseJson.result) {
-            // todo:ここを変更する
-            alert("登録成功!")
+            displayTodo(responseJson)
+            document.getElementById("createInput").value = ""
         // 失敗の場合
         } else {
             alert(`Error: ${responseJson.result}`)
@@ -204,12 +204,15 @@ function toggleUpdateButton(id) {
     const todoItem = document.querySelector(`[data-id='${id}']`)
     if (todoItem) {
         const doneButton = todoItem.querySelector("button")
+        const contentElement = todoItem.querySelector("p")
 
         if (doneButton) {
             if(doneButton.textContent === taskDoneButtonText) {
                 doneButton.textContent = taskNotDoneButtonText
+                contentElement.style.textDecoration = "none"
             } else if (doneButton.textContent === taskNotDoneButtonText) {
                 doneButton.textContent = taskDoneButtonText
+                contentElement.style.textDecoration = "line-through"
             }
         }
     } 
