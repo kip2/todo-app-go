@@ -7,9 +7,53 @@ const apiUpdateEndpoint = "http://localhost:8080/api/update"
 const taskDoneButtonText = "未完了に戻す"
 const taskNotDoneButtonText = "タスク完了"
 
+const apiRegisterEndpoint = "http://localhost:8080/api/register"
+
 document.getElementById("createButton").addEventListener("click", function() {
-    alert("Button clicked!");
-});
+    // inputの値を取得
+    const inputText = document.getElementById("createInput").value
+
+    // 入力が空の場合は何もしない
+    if (!inputText) {
+        alert("入力が空です")
+        return
+    }
+
+    // リクエストする対象のテキストをJSONに詰める
+    const requestData = {
+        Content: inputText
+    }
+
+    fetch(apiRegisterEndpoint, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(requestData)
+    })
+    .then((response) => {
+        // responseがエラーの場合
+        if (!response.ok) {
+            throw new Error("Failed to register Todo item")
+        }
+        return response.json()
+    })
+    .then(responseJson => {
+        // responseで返ってきたJSONの内容により処理を分岐
+        // 成功の場合
+        if (!responseJson.result) {
+            // todo:ここを変更する
+            alert("登録成功!")
+        // 失敗の場合
+        } else {
+            alert(`Error: ${responseJson.result}`)
+        }
+    })
+    // フェッチそのもののエラーをキャッチする
+    .catch(error => {
+        console.error("There was a problem with the fetch operation:", error)
+    })
+})
 
 
 fetch(apiTodoListEndpoint)

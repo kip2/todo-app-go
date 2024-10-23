@@ -133,23 +133,22 @@ func registerHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// エラー時のレスポンス用の変数を宣言
-	var errResponse models.Response
-
 	// DBへの登録処理を行う
 	insertId, err := db.Insert(req)
 	// DB登録処理が失敗なら、エラーメッセージを格納したResponseデータに変更
 	if err != nil {
-		errResponse = models.Response{
+		errResponse := models.Response{
 			Result: "Data register error.",
 		}
 		w.Header().Set("Content-Type", "application/json")
 		json.NewEncoder(w).Encode(errResponse)
-	} else {
-		response := db.SelectById(int(insertId))
-		w.Header().Set("Content-Type", "application/json")
-		json.NewEncoder(w).Encode(response)
+		return
 	}
+
+	// 登録成功時のレスポンス
+	response := db.SelectById(int(insertId))
+	w.Header().Set("Content-Type", "application/json")
+	json.NewEncoder(w).Encode(response)
 }
 
 // todosHandler godoc
