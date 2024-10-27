@@ -66,3 +66,18 @@ https://github.com/swaggo/swag
 フロントだけ入れ替える、バックだけ入れ替える、くみあわせで入れ替える、etc......
 
 今後の技術キャッチアップの土台となる、ということです。
+
+## API仕様について
+
+APIの仕様について、いつでも確認できるようにGithubPagesにアップロードしました。
+
+[API仕様](https://kip2.github.io/todo-app-go/)
+
+ツールとしては、Redocを用いています。
+
+[Redoc](https://redocly.github.io/redoc/)
+
+Swagger.yamlからの静的ファイルへの変換は以下の記事を参考にさせてもらいました。
+
+
+[Swagger OpenAPI3.0で記述したAPI仕様書をHTMLとして出力する - Qiita](https://qiita.com/godgarden/items/be420a8c165f4a0f3ad8)
