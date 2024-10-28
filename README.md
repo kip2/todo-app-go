@@ -79,5 +79,5 @@ APIの仕様について、いつでも確認できるようにGithubPagesにア
 
 Swagger.yamlからの静的ファイルへの変換は以下の記事を参考にさせてもらいました。
 
-
 [Swagger OpenAPI3.0で記述したAPI仕様書をHTMLとして出力する - Qiita](https://qiita.com/godgarden/items/be420a8c165f4a0f3ad8)
+
